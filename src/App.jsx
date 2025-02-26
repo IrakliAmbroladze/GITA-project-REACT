@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 import "./App.css";
 
 function App() {
@@ -9,13 +10,12 @@ function App() {
   });
 
   const [preview, setPreview] = useState(null);
+  const [captchaValue, setCaptchaValue] = useState(null);
 
   useEffect(() => {
     if (!formData.address) return;
-
     const objectUrl = URL.createObjectURL(formData.address);
     setPreview(objectUrl);
-
     return () => URL.revokeObjectURL(objectUrl);
   }, [formData.address]);
 
@@ -27,9 +27,33 @@ function App() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+
+    if (!captchaValue) {
+      alert("Please complete the CAPTCHA verification!");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:5000/verify-captcha", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: captchaValue }),
+      });
+
+      const data = await response.json();
+      if (!data.success) {
+        alert("CAPTCHA verification failed! Try again.");
+        return;
+      }
+
+      console.log("Form Data:", formData);
+      alert("Form submitted successfully!");
+    } catch (error) {
+      console.error("Error verifying CAPTCHA:", error);
+      alert("Server error. Please try again.");
+    }
   };
 
   return (
@@ -75,6 +99,13 @@ function App() {
             />
           </div>
         )}
+        <br />
+
+        <ReCAPTCHA
+          sitekey="6LeRROMqAAAAANzN4jWPVuK6MJkwN4nxcU8edBV1"
+          onChange={(value) => setCaptchaValue(value)}
+        />
+
         <br />
         <button type="submit" className="bg-blue-500 text-white p-2 rounded">
           Submit

@@ -7,5 +7,5 @@ const createInputComponent =
   ({ search, onSearch }) =>
     <TextInput id={id} label={label} value={search} onChange={onSearch} />;
 
-export const Filter = createInputComponent("filter", "Filter");
-export const Search = createInputComponent("search", "Search");
+export const Filter = createInputComponent("filter", "Filter by Department");
+export const Search = createInputComponent("search", "Search by name");

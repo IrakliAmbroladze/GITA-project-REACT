@@ -18,7 +18,7 @@ const Search = ({ search, onSearch }) => (
 
 function App() {
   const [searchTerm, setSearchTerm] = useState(
-    localStorage.getItem("search") || "React"
+    localStorage.getItem("search") || ""
   );
 
   const [employees, setEmployees] = useState([]);
@@ -50,7 +50,7 @@ function App() {
   const List = ({ list }) => (
     <ul>
       {list.length == 0 ? (
-        <li>no data</li>
+        <li>No match found.</li>
       ) : (
         list.map(({ objectID, ...item }) => <Item key={objectID} {...item} />)
       )}
@@ -74,8 +74,8 @@ function App() {
 
   return (
     <div>
-      <div className="text-3xl p-5">GITA REACT</div>
-      <div className="flex gap-60">
+      <div className="text-3xl p-5 text-center mb-5">GITA REACT</div>
+      <div className="flex gap-6">
         <div>
           <button onClick={handleListClick}>List</button>
           {listOpen && (
@@ -105,7 +105,7 @@ function App() {
         </div>
         <div>
           <Search search={searchTerm} onSearch={handleSearch} />
-          <List list={searchedEmployees} />
+          {searchTerm != "" && <List list={searchedEmployees} />}
         </div>
       </div>
     </div>

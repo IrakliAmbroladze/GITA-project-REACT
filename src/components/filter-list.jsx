@@ -4,15 +4,13 @@ const FilterList = ({ list }) => (
     {list.length == 0 ? (
       <li>No match found.</li>
     ) : (
-      list.map(({ objectID, ...item }) => <Item key={objectID} {...item} />)
+      list.map(({ department, name }, index) => (
+        <li key={index}>
+          {department} - {name}
+        </li>
+      ))
     )}
   </ul>
-);
-
-const Item = ({ name, department }) => (
-  <li>
-    {department} - {name}
-  </li>
 );
 
 export default FilterList;

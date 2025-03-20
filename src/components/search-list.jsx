@@ -4,15 +4,13 @@ const List = ({ list }) => (
     {list.length == 0 ? (
       <li>No match found.</li>
     ) : (
-      list.map(({ objectID, ...item }) => <Item key={objectID} {...item} />)
+      list.map(({ department, name, role }, index) => (
+        <li key={index}>
+          {name} - {department} - {role}
+        </li>
+      ))
     )}
   </ul>
-);
-
-const Item = ({ name, department, role }) => (
-  <li>
-    {name} - {department} - {role}
-  </li>
 );
 
 export default List;

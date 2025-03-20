@@ -1,20 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import { FetchEmplyees } from "./utils/fetch-all-data";
+import { Filter } from "./components/create-input-component";
+import { Search } from "./components/create-input-component";
 import "./App.css";
-
-const Search = ({ search, onSearch }) => (
-  <div>
-    <label htmlFor="search">Search: </label>
-    <input
-      id="search"
-      type="text"
-      value={search}
-      onChange={onSearch}
-      className="border"
-    />
-  </div>
-);
 
 function App() {
   const [searchTerm, setSearchTerm] = useState(
@@ -107,6 +96,7 @@ function App() {
           <Search search={searchTerm} onSearch={handleSearch} />
           {searchTerm != "" && <List list={searchedEmployees} />}
         </div>
+        <Filter search={searchTerm} onSearch={handleSearch} />
       </div>
     </div>
   );

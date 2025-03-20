@@ -1,8 +1,26 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import { FetchEmplyees } from "./utils/fetch-all-data";
 import "./App.css";
 
+const Search = ({ search, onSearch }) => (
+  <div>
+    <label htmlFor="search">Search: </label>
+    <input
+      id="search"
+      type="text"
+      value={search}
+      onChange={onSearch}
+      className="border"
+    />
+  </div>
+);
+
 function App() {
+  const [searchTerm, setSearchTerm] = useState(
+    localStorage.getItem("search") || "React"
+  );
+
   const [employees, setEmployees] = useState([]);
   const [listOpen, setListOpen] = useState(false);
   const [sortOpen, setSortOpen] = useState(false);
@@ -17,21 +35,51 @@ function App() {
     loadEmployees();
   }, []);
 
+  useEffect(() => {
+    localStorage.setItem("search", searchTerm);
+  }, [searchTerm]);
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const searchedEmployees = employees.filter((employee) =>
+    employee.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const List = ({ list }) => (
+    <ul>
+      {list.length == 0 ? (
+        <li>no data</li>
+      ) : (
+        list.map(({ objectID, ...item }) => <Item key={objectID} {...item} />)
+      )}
+    </ul>
+  );
+
+  const Item = ({ name, department, role }) => (
+    <li>
+      {name} - {department} - {role}
+    </li>
+  );
+
   const handleListClick = () => {
-    setListOpen(() => !listOpen);
+    sortOpen && setSortOpen((prev) => !prev);
+    setListOpen((prev) => !prev);
   };
   const handleSortClick = () => {
-    setSortOpen(() => !sortOpen);
+    listOpen && setListOpen((prev) => !prev);
+    setSortOpen((prev) => !prev);
   };
 
   return (
     <div>
       <div className="text-3xl p-5">GITA REACT</div>
-      <div className="flex">
+      <div className="flex gap-60">
         <div>
           <button onClick={handleListClick}>List</button>
           {listOpen && (
-            <ul>
+            <ul className="fixed">
               {employees.map((employee, index) => (
                 <li key={index}>
                   {employee.name} - {employee.department} - {employee.role}
@@ -43,7 +91,7 @@ function App() {
         <div>
           <button onClick={handleSortClick}>Sort</button>
           {sortOpen && (
-            <ul>
+            <ul className="fixed">
               {employees
                 .slice()
                 .sort((a, b) => a.name.localeCompare(b.name))
@@ -54,6 +102,10 @@ function App() {
                 ))}
             </ul>
           )}
+        </div>
+        <div>
+          <Search search={searchTerm} onSearch={handleSearch} />
+          <List list={searchedEmployees} />
         </div>
       </div>
     </div>

@@ -23,9 +23,14 @@ function App() {
         console.error("Error fetching employees:", error);
       }
     };
-    localStorage.setItem("search", searchTerm);
-    localStorage.setItem("filter", filterTerm);
     loadEmployees();
+  }, []);
+  useEffect(() => {
+    const storageItems = { search: searchTerm, filter: filterTerm };
+
+    Object.entries(storageItems).forEach(([key, value]) => {
+      localStorage.setItem(key, value);
+    });
   }, [searchTerm, filterTerm]);
 
   const handleSearch = (event) => {

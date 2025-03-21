@@ -81,7 +81,10 @@ function App() {
 
   return (
     <div>
-      <div className="text-3xl p-5 text-center mb-5">GITA REACT</div>
+      <p className="text-3xl p-5 text-center">GITA REACT</p>
+      <p className="text-xl  text-center">by Irakli Ambroladze</p>
+      <p className="text-xl text-center">Instructor: Sava Nikolov</p>
+      <p className="text-xl p-5 text-center">GITA & New Horizons</p>
       <div className="flex justify-between">
         <div className="flex gap-6">
           <ListEmployees

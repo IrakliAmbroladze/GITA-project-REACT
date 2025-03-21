@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { FetchEmplyees } from "./utils/fetch-all-data";
 import { Filter } from "./components/create-input-component";
 import { Search } from "./components/create-input-component";
+import ListEmployees from "./components/list-employees";
 import FilterList from "./components/filter-list";
 import List from "./components/search-list";
 import "./App.css";
@@ -60,18 +61,12 @@ function App() {
     <div>
       <div className="text-3xl p-5 text-center mb-5">GITA REACT</div>
       <div className="flex gap-6">
-        <div>
-          <button onClick={handleListClick}>List</button>
-          {listOpen && (
-            <ul className="fixed">
-              {employees.map((employee, index) => (
-                <li key={index}>
-                  {employee.name} - {employee.department} - {employee.role}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+        <ListEmployees
+          onClick={handleListClick}
+          listModal={listOpen}
+          employees={employees}
+        />
+
         <div>
           <button onClick={handleSortClick}>Sort</button>
           {sortOpen && (

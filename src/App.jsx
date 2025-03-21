@@ -37,6 +37,18 @@ function App() {
     });
   }, [searchTerm, filterTerm]);
 
+  const addEmployee = (newEmployee) => {
+    const updatedEmployees = [...employees, newEmployee];
+    setEmployees(updatedEmployees);
+    localStorage.setItem(
+      "employees",
+      JSON.stringify([
+        ...JSON.parse(localStorage.getItem("employees") || "[]"),
+        newEmployee,
+      ])
+    );
+  };
+
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -83,7 +95,11 @@ function App() {
             employees={employees}
           />
         </div>
-        <AddEmployee onClick={handleFormClick} addEmployeeModal={addFormOpen} />
+        <AddEmployee
+          onClick={handleFormClick}
+          addEmployeeModal={addFormOpen}
+          onAdd={addEmployee}
+        />
         <div className="flex gap-6">
           <div>
             <Search search={searchTerm} onSearch={handleSearch} />

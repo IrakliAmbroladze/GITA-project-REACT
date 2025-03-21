@@ -3,6 +3,7 @@ import { FetchEmplyees } from "./utils/fetch-all-data";
 import { Filter } from "./components/create-input-component";
 import { Search } from "./components/create-input-component";
 import ListEmployees from "./components/list-employees";
+import SortEmployees from "./components/sort-employees";
 import FilterList from "./components/filter-list";
 import List from "./components/search-list";
 import "./App.css";
@@ -66,22 +67,11 @@ function App() {
           listModal={listOpen}
           employees={employees}
         />
-
-        <div>
-          <button onClick={handleSortClick}>Sort</button>
-          {sortOpen && (
-            <ul className="fixed">
-              {employees
-                .slice()
-                .sort((a, b) => a.name.localeCompare(b.name))
-                .map((employee, index) => (
-                  <li key={index}>
-                    {employee.name} - {employee.department} - {employee.role}
-                  </li>
-                ))}
-            </ul>
-          )}
-        </div>
+        <SortEmployees
+          onClick={handleSortClick}
+          sortModal={sortOpen}
+          employees={employees}
+        />
         <div>
           <Search search={searchTerm} onSearch={handleSearch} />
           {searchTerm != "" && <List list={searchedEmployees} />}

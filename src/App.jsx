@@ -4,6 +4,7 @@ import { Filter } from "./components/create-input-component";
 import { Search } from "./components/create-input-component";
 import ListEmployees from "./components/list-employees";
 import SortEmployees from "./components/sort-employees";
+import AddEmployee from "./components/add-employee";
 import FilterList from "./components/filter-list";
 import List from "./components/search-list";
 import "./App.css";
@@ -16,6 +17,7 @@ function App() {
   const [employees, setEmployees] = useState([]);
   const [listOpen, setListOpen] = useState(false);
   const [sortOpen, setSortOpen] = useState(false);
+  const [addFormOpen, setAddFormOpen] = useState(false);
 
   useEffect(() => {
     const loadEmployees = async () => {
@@ -51,34 +53,46 @@ function App() {
 
   const handleListClick = () => {
     sortOpen && setSortOpen((prev) => !prev);
+    addFormOpen && setAddFormOpen((prev) => !prev);
     setListOpen((prev) => !prev);
   };
   const handleSortClick = () => {
     listOpen && setListOpen((prev) => !prev);
+    addFormOpen && setAddFormOpen((prev) => !prev);
     setSortOpen((prev) => !prev);
+  };
+  const handleFormClick = () => {
+    listOpen && setListOpen((prev) => !prev);
+    sortOpen && setSortOpen((prev) => !prev);
+    setAddFormOpen((prev) => !prev);
   };
 
   return (
     <div>
       <div className="text-3xl p-5 text-center mb-5">GITA REACT</div>
-      <div className="flex gap-6">
-        <ListEmployees
-          onClick={handleListClick}
-          listModal={listOpen}
-          employees={employees}
-        />
-        <SortEmployees
-          onClick={handleSortClick}
-          sortModal={sortOpen}
-          employees={employees}
-        />
-        <div>
-          <Search search={searchTerm} onSearch={handleSearch} />
-          {searchTerm != "" && <List list={searchedEmployees} />}
+      <div className="flex justify-between">
+        <div className="flex gap-6">
+          <ListEmployees
+            onClick={handleListClick}
+            listModal={listOpen}
+            employees={employees}
+          />
+          <SortEmployees
+            onClick={handleSortClick}
+            sortModal={sortOpen}
+            employees={employees}
+          />
         </div>
-        <div>
-          <Filter search={filterTerm} onSearch={handleFilter} />
-          {filterTerm != "" && <FilterList list={filteredEmployees} />}
+        <AddEmployee onClick={handleFormClick} addEmployeeModal={addFormOpen} />
+        <div className="flex gap-6">
+          <div>
+            <Search search={searchTerm} onSearch={handleSearch} />
+            {searchTerm != "" && <List list={searchedEmployees} />}
+          </div>
+          <div>
+            <Filter search={filterTerm} onSearch={handleFilter} />
+            {filterTerm != "" && <FilterList list={filteredEmployees} />}
+          </div>
         </div>
       </div>
     </div>
